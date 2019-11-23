@@ -1,4 +1,5 @@
 const R = require('ramda');
+const NoAuthCubeLattice = require('./NoAuthCubeLattice');
 const UserError = require('../compiler/UserError');
 
 class PreAggregations {
@@ -7,6 +8,8 @@ class PreAggregations {
     this.historyQueries = historyQueries;
     this.cubeLatticeCache = cubeLatticeCache;
     this.cubeLattices = {};
+    console.log("PreAggregations.cubeLatticeFactory", {historyQueries, cubeLatticeCache, cubeLatticeFactory})
+    this.cubeLatticeFactory = cubeLatticeFactory || (() => new NoAuthCubeLattice())
   }
 
   preAggregationsDescription() {
@@ -278,7 +281,9 @@ class PreAggregations {
   }
 
   getCubeLattice(cube, preAggregationName, preAggregation) {
-    throw new UserError('Auto rollups supported only in Enterprise version');
+    if (this.cubeLatticeFactory){
+      return this.cubeLatticeFactory(cube, preAggregation, this.cubeLatticeCache, this.cubeLattices)
+    }
   }
 
   findPreAggregationForQuery() {
@@ -311,6 +316,7 @@ class PreAggregations {
               R.map(([preAggregationName, preAggregation]) => {
                 const cubeLattice = this.getCubeLattice(cube, preAggregationName, preAggregation);
                 const optimalPreAggregation = cubeLattice.findOptimalPreAggregationFromLattice(this.query);
+                console.log("returning optimalPreAggregation", {optimalPreAggregation})
                 return optimalPreAggregation && {
                   preAggregationName: preAggregationName + this.autoRollupNameSuffix(cube, optimalPreAggregation),
                   preAggregation: Object.assign(
@@ -323,12 +329,14 @@ class PreAggregations {
             )(preAggregations);
             rollupPreAggregations = rollupPreAggregations.concat(autoRollupPreAggregations);
           }
+          console.log("returning rollupPreAggregations", {rollupPreAggregations})
           return rollupPreAggregations;
         }),
         R.unnest
       )(query.collectCubeNames())[0];
     }
-    return this.preAggregationForQuery;
+    console.log("preAggregationForQuery", {preAggregationForQuery: this.preAggregationForQuery})
+      return this.preAggregationForQuery;
   }
 
   static hasCumulativeMeasures(query) {
@@ -395,6 +403,7 @@ class PreAggregations {
   }
 
   autoRollupNameSuffix(cube, aggregation) {
+    console.log("autoRollupNameSuffix", { cube, aggregation })
     return '_' + aggregation.dimensions.concat(
       aggregation.timeDimensions.map(d => `${d.dimension}${d.granularity.substring(0, 1)}`)
     ).map(s => {

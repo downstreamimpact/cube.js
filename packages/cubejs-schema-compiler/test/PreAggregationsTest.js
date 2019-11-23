@@ -9,7 +9,7 @@ require('should');
 const prepareCompiler = PrepareCompiler.prepareCompiler;
 const dbRunner = require('./DbRunner');
 
-describe('PreAggregations', function test() {
+describe('PreAggregations @testit', function test() {
   this.timeout(20000);
 
   after(async () => {

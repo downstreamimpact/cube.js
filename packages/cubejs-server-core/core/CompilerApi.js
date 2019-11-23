@@ -1,6 +1,5 @@
 const QueryBuilder = require('@cubejs-backend/schema-compiler/adapter/QueryBuilder');
 const PrepareCompiler = require('@cubejs-backend/schema-compiler/compiler/PrepareCompiler');
-const NoAuthCubeLattice = require('@cubejs-backend/schema-compiler/adapter/NoAuthCubeLattice');
 
 const crypto = require('crypto');
 

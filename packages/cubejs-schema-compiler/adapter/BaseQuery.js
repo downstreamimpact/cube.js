@@ -28,11 +28,13 @@ class BaseQuery {
   }
 
   initFromOptions() {
+    console.log("options", this.options)
     this.contextSymbols = Object.assign({ userContext: {} }, this.options.contextSymbols || {});
     this.paramAllocator = this.options.paramAllocator || this.newParamAllocator();
     this.timezone = this.options.timezone;
     this.rowLimit = this.options.rowLimit;
     this.offset = this.options.offset;
+    this.cubeLatticeFactory = this.options.cubeLatticeFactory
     this.preAggregations = this.newPreAggregations();
     this.measures = (this.options.measures || []).map(this.newMeasure.bind(this));
     this.dimensions = (this.options.dimensions || []).map(this.newDimension.bind(this));
@@ -200,7 +202,7 @@ class BaseQuery {
   }
 
   newPreAggregations() {
-    return new PreAggregations(this, this.options.historyQueries || [], this.options.cubeLatticeCache, this.options.cubeLatticeCache);
+    return new PreAggregations(this, this.options.historyQueries || [], this.options.cubeLatticeCache, this.cubeLatticeFactory);
   }
 
   escapeColumnName(name) {

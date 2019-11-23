@@ -1,12 +1,15 @@
 /* eslint-disable quote-props */
 const R = require('ramda');
 
-const SmartPostgresQuery = require('../adapter/SmartPostgresQuery');
+const PostgresQuery = require('../adapter/PostgresQuery');
 const PrepareCompiler = require('./PrepareCompiler');
+const SmartLattice = require('../adapter/SmartLattice');
 require('should');
 
 const prepareCompiler = PrepareCompiler.prepareCompiler;
 const dbRunner = require('./DbRunner');
+
+const smartCubeLatticeFactory = (cube, preAggregation, cubeLatticeCache, cubeLattices) => new SmartLattice(cube, preAggregation, cubeLatticeCache, cubeLattices)
 
 describe('PreAggregations @testit', function test() {
   this.timeout(20000);
@@ -176,7 +179,7 @@ describe('PreAggregations @testit', function test() {
 
   it('simple pre-aggregation', () => {
     return compiler.compile().then(() => {
-      const query = new SmartPostgresQuery({ joinGraph, cubeEvaluator, compiler }, {
+      const query = new PostgresQuery({ joinGraph, cubeEvaluator, compiler }, {
         measures: [
           'visitors.count'
         ],
@@ -189,7 +192,8 @@ describe('PreAggregations @testit', function test() {
         order: [{
           id: 'visitors.createdAt'
         }],
-        preAggregationsSchema: ''
+        preAggregationsSchema: '',
+        cubeLatticeFactory: smartCubeLatticeFactory
       });
 
       const queryAndParams = query.buildSqlAndParams();
@@ -226,7 +230,7 @@ describe('PreAggregations @testit', function test() {
 
   it('leaf measure pre-aggregation', () => {
     return compiler.compile().then(() => {
-      const query = new SmartPostgresQuery({ joinGraph, cubeEvaluator, compiler }, {
+      const query = new PostgresQuery({ joinGraph, cubeEvaluator, compiler }, {
         measures: [
           'visitors.ratio'
         ],
@@ -239,7 +243,8 @@ describe('PreAggregations @testit', function test() {
         order: [{
           id: 'visitors.createdAt'
         }],
-        preAggregationsSchema: ''
+        preAggregationsSchema: '',
+        cubeLatticeFactory: smartCubeLatticeFactory
       });
 
       const queryAndParams = query.buildSqlAndParams();
@@ -277,7 +282,7 @@ describe('PreAggregations @testit', function test() {
 
   it('leaf measure pre-aggregation with measure filter and filtered dimension used', () => {
     return compiler.compile().then(() => {
-      const query = new SmartPostgresQuery({ joinGraph, cubeEvaluator, compiler }, {
+      const query = new PostgresQuery({ joinGraph, cubeEvaluator, compiler }, {
         measures: [
           'visitors.count',
           'visitors.google_count',
@@ -292,7 +297,8 @@ describe('PreAggregations @testit', function test() {
         order: [{
           id: 'visitors.createdAt'
         }],
-        preAggregationsSchema: ''
+        preAggregationsSchema: '',
+        cubeLatticeFactory: smartCubeLatticeFactory
       });
 
       const queryAndParams = query.buildSqlAndParams();
@@ -338,7 +344,7 @@ describe('PreAggregations @testit', function test() {
 
   it('leaf measure pre-aggregation with measure filter without filtered dimension used', () => {
     return compiler.compile().then(() => {
-      const query = new SmartPostgresQuery({ joinGraph, cubeEvaluator, compiler }, {
+      const query = new PostgresQuery({ joinGraph, cubeEvaluator, compiler }, {
         measures: [
           'visitors.count',
           'visitors.google_count',
@@ -352,7 +358,8 @@ describe('PreAggregations @testit', function test() {
         order: [{
           id: 'visitors.createdAt'
         }],
-        preAggregationsSchema: ''
+        preAggregationsSchema: '',
+        cubeLatticeFactory: smartCubeLatticeFactory
       });
 
       const queryAndParams = query.buildSqlAndParams();
@@ -394,7 +401,7 @@ describe('PreAggregations @testit', function test() {
 
   it('inherited original sql', () => {
     return compiler.compile().then(() => {
-      const query = new SmartPostgresQuery({ joinGraph, cubeEvaluator, compiler }, {
+      const query = new PostgresQuery({ joinGraph, cubeEvaluator, compiler }, {
         measures: [
           'GoogleVisitors.count'
         ],
@@ -407,7 +414,8 @@ describe('PreAggregations @testit', function test() {
         order: [{
           id: 'GoogleVisitors.createdAt'
         }],
-        preAggregationsSchema: ''
+        preAggregationsSchema: '',
+        cubeLatticeFactory: smartCubeLatticeFactory
       });
 
       const queryAndParams = query.buildSqlAndParams();
@@ -432,14 +440,15 @@ describe('PreAggregations @testit', function test() {
 
   it('sub query', () => {
     return compiler.compile().then(() => {
-      const query = new SmartPostgresQuery({ joinGraph, cubeEvaluator, compiler }, {
+      const query = new PostgresQuery({ joinGraph, cubeEvaluator, compiler }, {
         measures: [
           'visitors.count'
         ],
         order: [{ id: 'visitors.checkinsCount' }],
         dimensions: ['visitors.checkinsCount'],
         timezone: 'America/Los_Angeles',
-        preAggregationsSchema: ''
+        preAggregationsSchema: '',
+        cubeLatticeFactory: smartCubeLatticeFactory
       });
 
       const queryAndParams = query.buildSqlAndParams();
@@ -469,7 +478,7 @@ describe('PreAggregations @testit', function test() {
 
   it('multi-stage', () => {
     return compiler.compile().then(() => {
-      const query = new SmartPostgresQuery({ joinGraph, cubeEvaluator, compiler }, {
+      const query = new PostgresQuery({ joinGraph, cubeEvaluator, compiler }, {
         measures: [
           'visitors.checkinsTotal'
         ],
@@ -483,6 +492,7 @@ describe('PreAggregations @testit', function test() {
         order: [{
           id: 'visitors.createdAt'
         }],
+        cubeLatticeFactory: smartCubeLatticeFactory
       });
 
       const queryAndParams = query.buildSqlAndParams();
@@ -515,7 +525,7 @@ describe('PreAggregations @testit', function test() {
 
   it('partitioned', () => {
     return compiler.compile().then(() => {
-      const query = new SmartPostgresQuery({ joinGraph, cubeEvaluator, compiler }, {
+      const query = new PostgresQuery({ joinGraph, cubeEvaluator, compiler }, {
         measures: [
           'visitors.checkinsTotal'
         ],
@@ -532,6 +542,7 @@ describe('PreAggregations @testit', function test() {
         order: [{
           id: 'visitors.createdAt'
         }],
+        cubeLatticeFactory: smartCubeLatticeFactory
       });
 
       const queryAndParams = query.buildSqlAndParams();
@@ -572,7 +583,7 @@ describe('PreAggregations @testit', function test() {
 
   it('segment', () => {
     return compiler.compile().then(() => {
-      const query = new SmartPostgresQuery({ joinGraph, cubeEvaluator, compiler }, {
+      const query = new PostgresQuery({ joinGraph, cubeEvaluator, compiler }, {
         measures: [
           'visitors.checkinsTotal'
         ],
@@ -588,6 +599,7 @@ describe('PreAggregations @testit', function test() {
         order: [{
           id: 'visitors.createdAt'
         }],
+        cubeLatticeFactory: smartCubeLatticeFactory
       });
 
       const queryAndParams = query.buildSqlAndParams();
@@ -617,7 +629,7 @@ describe('PreAggregations @testit', function test() {
 
   it('partitioned without time', () => {
     return compiler.compile().then(() => {
-      const query = new SmartPostgresQuery({ joinGraph, cubeEvaluator, compiler }, {
+      const query = new PostgresQuery({ joinGraph, cubeEvaluator, compiler }, {
         measures: [
           'visitors.checkinsTotal'
         ],
@@ -628,6 +640,7 @@ describe('PreAggregations @testit', function test() {
         preAggregationsSchema: '',
         timeDimensions: [],
         order: [],
+        cubeLatticeFactory: smartCubeLatticeFactory
       });
 
       const queryAndParams = query.buildSqlAndParams();
@@ -721,7 +734,7 @@ describe('PreAggregations in time hierarchy', function test() {
 
   it('query on year match to pre-agg on month', () => {
     return compiler.compile().then(() => {
-      const query = new SmartPostgresQuery({ joinGraph, cubeEvaluator, compiler }, {
+      const query = new PostgresQuery({ joinGraph, cubeEvaluator, compiler }, {
         measures: [
           'visitors.count'
         ],
@@ -734,6 +747,7 @@ describe('PreAggregations in time hierarchy', function test() {
         }],
         preAggregationsSchema: '',
         order: [],
+        cubeLatticeFactory: smartCubeLatticeFactory
       });
 
       const queryAndParams = query.buildSqlAndParams();
@@ -765,7 +779,7 @@ describe('PreAggregations in time hierarchy', function test() {
   });
   it('query on week match to pre-agg on day', () => {
     return compiler.compile().then(() => {
-      const query = new SmartPostgresQuery({ joinGraph, cubeEvaluator, compiler }, {
+      const query = new PostgresQuery({ joinGraph, cubeEvaluator, compiler }, {
         measures: [
           'visitors.count'
         ],
@@ -778,6 +792,7 @@ describe('PreAggregations in time hierarchy', function test() {
         }],
         preAggregationsSchema: '',
         order: [],
+        cubeLatticeFactory: smartCubeLatticeFactory
       });
 
       const queryAndParams = query.buildSqlAndParams();
