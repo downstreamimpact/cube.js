@@ -10,6 +10,8 @@ const snowflake = require('./SnowflakeQuery');
 const clickhouse = require('./ClickHouseQuery');
 const hive = require('./HiveQuery');
 const oracle = require('./OracleQuery');
+const smart_postgres = require('./SmartPostgresQuery');
+const smart_redshift = require('./SmartRedshiftQuery');
 
 const ADAPTERS = {
   postgres,
@@ -26,6 +28,8 @@ const ADAPTERS = {
   clickhouse,
   hive,
   oracle,
+  smart_postgres,
+  smart_redshift
 };
 exports.query = (compilers, dbType, queryOptions) => {
   if (!ADAPTERS[dbType]) {

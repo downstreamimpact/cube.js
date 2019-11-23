@@ -12,7 +12,9 @@
     "node": ">=8.11.1"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "testit": "mocha --grep '@testit'"
+
   },
   "dependencies": {
     "@hapi/joi": "^14.3.1",

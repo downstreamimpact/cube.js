@@ -200,7 +200,7 @@ class BaseQuery {
   }
 
   newPreAggregations() {
-    return new PreAggregations(this, this.options.historyQueries || [], this.options.cubeLatticeCache);
+    return new PreAggregations(this, this.options.historyQueries || [], this.options.cubeLatticeCache, this.options.cubeLatticeCache);
   }
 
   escapeColumnName(name) {
@@ -1374,6 +1374,7 @@ class BaseQuery {
   }
 
   preAggregationSql(cube, preAggregation) {
+    console.log("preAggregationSql", {cube, preAggregation})
     if (preAggregation.type === 'autoRollup') {
       return this.preAggregations.autoRollupPreAggregationQuery(cube, preAggregation).buildSqlAndParams();
     } else if (preAggregation.type === 'rollup') {

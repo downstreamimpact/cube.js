@@ -100,6 +100,7 @@ class CubejsServerCore {
     }
     this.options = options;
     this.driverFactory = options.driverFactory;
+    this.cubeLatticeFactory = options.cubeLatticeFactory;
     this.externalDriverFactory = options.externalDriverFactory;
     this.apiSecret = options.apiSecret;
     this.schemaPath = options.schemaPath || 'schema';
@@ -325,7 +326,8 @@ class CubejsServerCore {
       logger: this.logger,
       externalDbType: options.externalDbType,
       preAggregationsSchema: options.preAggregationsSchema,
-      allowUngroupedWithoutPrimaryKey: this.options.allowUngroupedWithoutPrimaryKey
+      allowUngroupedWithoutPrimaryKey: this.options.allowUngroupedWithoutPrimaryKey,
+      cubeLatticeFactory: this.cubeLatticeFactory
     });
   }
 

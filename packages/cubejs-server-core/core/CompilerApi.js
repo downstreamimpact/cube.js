@@ -1,5 +1,7 @@
 const QueryBuilder = require('@cubejs-backend/schema-compiler/adapter/QueryBuilder');
 const PrepareCompiler = require('@cubejs-backend/schema-compiler/compiler/PrepareCompiler');
+const NoAuthCubeLattice = require('@cubejs-backend/schema-compiler/adapter/NoAuthCubeLattice');
+
 const crypto = require('crypto');
 
 class CompilerApi {
@@ -11,6 +13,7 @@ class CompilerApi {
     this.logger = this.options.logger;
     this.preAggregationsSchema = this.options.preAggregationsSchema;
     this.allowUngroupedWithoutPrimaryKey = this.options.allowUngroupedWithoutPrimaryKey;
+    this.cubeLatticeFactory = this.options.cubeLatticeFactory
   }
 
   async getCompilers() {
@@ -72,7 +75,8 @@ class CompilerApi {
         ...query,
         externalDbType: this.options.externalDbType,
         preAggregationsSchema: this.preAggregationsSchema,
-        allowUngroupedWithoutPrimaryKey: this.allowUngroupedWithoutPrimaryKey
+        allowUngroupedWithoutPrimaryKey: this.allowUngroupedWithoutPrimaryKey,
+        cubeLatticeFactory: this.cubeLatticeFactory
       }
     );
   }

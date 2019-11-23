@@ -2,7 +2,7 @@ const R = require('ramda');
 const UserError = require('../compiler/UserError');
 
 class PreAggregations {
-  constructor(query, historyQueries, cubeLatticeCache) {
+  constructor(query, historyQueries, cubeLatticeCache, cubeLatticeFactory) {
     this.query = query;
     this.historyQueries = historyQueries;
     this.cubeLatticeCache = cubeLatticeCache;
@@ -424,6 +424,7 @@ class PreAggregations {
   }
 
   rollupPreAggregation(preAggregationForQuery) {
+    console.log("rollupPreAggregation", {preAggregationForQuery})
     const table = preAggregationForQuery.preAggregation.partitionGranularity && this.query.timeDimensions.length ?
       this.partitionUnion(preAggregationForQuery) :
       this.query.preAggregationTableName(
