@@ -281,9 +281,12 @@ class PreAggregations {
   }
 
   getCubeLattice(cube, preAggregationName, preAggregation) {
-    if (this.cubeLatticeFactory){
-      return this.cubeLatticeFactory(cube, preAggregation, this.cubeLatticeCache, this.cubeLattices)
+    if (!this.cubeLattices.main) {
+      if (this.cubeLatticeFactory){
+        this.cubeLattices.main = this.cubeLatticeFactory(cube, preAggregation, this.cubeLatticeCache, )
+      }
     }
+    return this.cubeLattices.main
   }
 
   findPreAggregationForQuery() {

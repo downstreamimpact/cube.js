@@ -1,3 +1,4 @@
+const R = require('ramda');
 
 class SmartLattice {
   constructor(cube, preAggregation, cubeLatticeCache, cubeLattices) {
@@ -8,8 +9,34 @@ class SmartLattice {
     console.log("SmartLattice", {cube, preAggregation, cubeLatticeCache, cubeLattices})
   }
 
+  appendQuery(query) {
+    if (!this.cubeLatticeCache) {
+      this.cubeLatticeCache.queryHistory = [];
+    }
+    this.cubeLatticeCache.queryHistory.push(query);
+  }
+
+  benefit(view, queryUnion) {
+    // number of rows in resulting view * number of times that dimension combo was used
+  }
+
   findOptimalPreAggregationFromLattice(query) {
       console.log("query", {query})
+      const maxPreAggregations = t.preAggregation.maxPreAggregations || 5;
+      const S = this.cubeLattices
+
+      this.appendQuery(query)
+
+      // determine dimensions needed for query
+      // add to the dimensions overall dict +1
+      // iterate over
+
+      for (let i = 0 ; i++ ; i <= maxPreAggregations) {
+          const unions = this.cubeLatticeCache.queryHistory
+          // const maxV = this.cubeLatticeCache.queryHistory.filter(q => )
+
+      }
+
       // return {
       //     preAggregationName: 'myauto',
       //     preAggregation: {
@@ -54,6 +81,7 @@ class SmartLattice {
       //   S = S union {MaxV};
       // end;
       // resulting S is the querying history constrained greedy selection;
+      // return null // no valid preaggregate
       return {
           type: 'rollup',
           measures: query.measures,
