@@ -9,7 +9,7 @@ require('should');
 const prepareCompiler = PrepareCompiler.prepareCompiler;
 const dbRunner = require('./DbRunner');
 
-describe('PreAggregations', function test() {
+describe('PreAggregations @testit', function test() {
   this.timeout(20000);
 
   after(async () => {
@@ -99,6 +99,17 @@ describe('PreAggregations', function test() {
             sql: 'select NOW()'
           }
         },
+        multiStage: {
+          useOriginalSqlPreAggregations: true,
+          type: 'rollup',
+          measureReferences: [checkinsTotal],
+          timeDimensionReference: createdAt,
+          granularity: 'month',
+          partitionGranularity: 'day',
+          refreshKey: {
+            sql: \`SELECT CASE WHEN \${FILTER_PARAMS.visitors.createdAt.filter((from, to) => \`\${to}::timestamp > now()\`)} THEN now() END\`
+          }
+        },
         googleRollup: {
           type: 'rollup',
           measureReferences: [checkinsTotal],
@@ -111,17 +122,6 @@ describe('PreAggregations', function test() {
           measureReferences: [countDistinctApprox],
           timeDimensionReference: createdAt,
           granularity: 'day'
-        },
-        multiStage: {
-          useOriginalSqlPreAggregations: true,
-          type: 'rollup',
-          measureReferences: [checkinsTotal],
-          timeDimensionReference: createdAt,
-          granularity: 'month',
-          partitionGranularity: 'day',
-          refreshKey: {
-            sql: \`SELECT CASE WHEN \${FILTER_PARAMS.visitors.createdAt.filter((from, to) => \`\${to}::timestamp > now()\`)} THEN now() END\`
-          }
         },
         partitioned: {
           type: 'rollup',
@@ -149,7 +149,21 @@ describe('PreAggregations', function test() {
           measureReferences: [count],
           timeDimensionReference: createdAt,
           granularity: 'day',
-        }
+        },
+        relativeDateRollup: {
+          type: 'rollup',
+          measureReferences: [count],
+          dimensionReferences: [source],
+          timeDimensionReference: createdAt,
+          dateRange: 'last week',
+        },
+        staticDateRollup: {
+          type: 'rollup',
+          measureReferences: [count],
+          dimensionReferences: [source],
+          timeDimensionReference: createdAt,
+          dateRange: ['2017-01-05', '2017-01-06'],
+        },
       }
     })
     
@@ -435,6 +449,88 @@ describe('PreAggregations', function test() {
               "visitors__google_count": null
             }
           ]
+        );
+      });
+    });
+  });
+
+  it('static date range', () => {
+    return compiler.compile().then(() => {
+      const query = new PostgresQuery({ joinGraph, cubeEvaluator, compiler }, {
+        measures: [
+          'visitors.count'
+        ],
+        dimensions: [
+          'visitors.source'
+        ],
+        timeDimensions: [{
+          dimension: 'visitors.createdAt',
+          dateRange: ['2017-01-05', '2017-01-06']
+        }],
+        timezone: 'UTC',
+        order: [{
+          id: 'visitors.count'
+        }],
+        preAggregationsSchema: ''
+      });
+
+      const queryAndParams = query.buildSqlAndParams();
+      console.log("queryAndParams", queryAndParams);
+      const preAggregationsDescription = query.preAggregations.preAggregationsDescription();
+      console.log("preAggregationsDescription", preAggregationsDescription);
+      preAggregationsDescription[0].loadSql[0].should.match(/visitors_static_date_rollup/);
+      console.log("preAggregationsDescription params", preAggregationsDescription[0].loadSql[1]);
+
+      return dbRunner.testQueries(tempTablePreAggregations(preAggregationsDescription).concat([
+        query.buildSqlAndParams()
+      ]).map(q => replaceTableName(q, preAggregationsDescription, 13))).then(res => {
+        res.should.be.deepEqual(
+          [
+            {
+              "visitors__source": "google",
+              "visitors__count": "1",
+            },
+            {
+              "visitors__source": 'some',
+              "visitors__count": "1",
+            }
+          ]
+        );
+      });
+    });
+  });
+
+  it('relative date range', () => {
+    return compiler.compile().then(() => {
+      const query = new PostgresQuery({ joinGraph, cubeEvaluator, compiler }, {
+        measures: [
+          'visitors.count'
+        ],
+        dimensions: [
+          'visitors.source'
+        ],
+        timeDimensions: [{
+          dimension: 'visitors.createdAt',
+          dateRange: 'last week'
+        }],
+        timezone: 'America/Los_Angeles',
+        order: [{
+          id: 'visitors.count'
+        }],
+        preAggregationsSchema: ''
+      });
+
+      const queryAndParams = query.buildSqlAndParams();
+      console.log(queryAndParams);
+      const preAggregationsDescription = query.preAggregations.preAggregationsDescription();
+      console.log(preAggregationsDescription);
+      preAggregationsDescription[0].loadSql[0].should.match(/visitors_relative_date_rollup/);
+
+      return dbRunner.testQueries(tempTablePreAggregations(preAggregationsDescription).concat([
+        query.buildSqlAndParams()
+      ]).map(q => replaceTableName(q, preAggregationsDescription, 14))).then(res => {
+        res.should.be.deepEqual(
+          []
         );
       });
     });

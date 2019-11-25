@@ -173,7 +173,35 @@ cube(`Orders`, {
 `partitionGranularity` can be either `day`, `week` or `month`.
 For example if `partitionGranularity` is set to `month` Cube.js will generate separate `rollup` table for each month.
 This can reduce rollup refreshing time and cost significantly.
-Partitioned rollups currently cannot be used by queries without time dimensions. 
+Partitioned rollups currently cannot be used by queries without time dimensions.
+
+
+### Segment Partitioning
+
+Any rollup can be auto-filtered to some segments by using the `segmentReferences` property:
+
+```javascript
+cube(`Orders`, {
+  sql: `select * from orders`,
+
+  segments: {
+    toys: {
+        sql: `category = 'toys'`
+    }
+  },
+
+  preAggregations: {
+    categoryAndDate: {
+      type: `rollup`,
+      measureReferences: [Orders.count, revenue],
+      segmentReferences: [toys],
+      timeDimensionReference: createdAt,
+      granularity: `day`,
+      partitionGranularity: `month`
+    }
+  }
+});
+```
 
 ## Auto Rollup
 

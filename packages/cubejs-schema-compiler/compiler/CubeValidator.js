@@ -148,27 +148,39 @@ const cubeSchema = Joi.object().keys({
     description: Joi.string()
   })),
   preAggregations: Joi.object().pattern(identifierRegex, Joi.alternatives().try(
-    Joi.object().keys(Object.assign(BasePreAggregation, {
+    Joi.object().keys(Object.assign({}, BasePreAggregation, {
       type: Joi.any().valid('autoRollup').required(),
       maxPreAggregations: Joi.number()
     })),
-    Joi.object().keys(Object.assign(BasePreAggregation, {
+    Joi.object().keys(Object.assign({}, BasePreAggregation, {
       type: Joi.any().valid('originalSql').required()
     })),
-    Joi.object().keys(Object.assign(BasePreAggregation, {
+    Joi.object().keys(Object.assign({}, BasePreAggregation, {
       type: Joi.any().valid('rollup').required(),
       measureReferences: Joi.func(),
       dimensionReferences: Joi.func(),
       segmentReferences: Joi.func()
     })),
-    Joi.object().keys(Object.assign(BasePreAggregation, {
+    Joi.object().keys(Object.assign({}, BasePreAggregation, {
       type: Joi.any().valid('rollup').required(),
       measureReferences: Joi.func(),
       dimensionReferences: Joi.func(),
       segmentReferences: Joi.func(),
       timeDimensionReference: Joi.func().required(),
       granularity: Joi.any().valid('hour', 'day', 'week', 'month', 'year').required()
-    }))
+    })),
+    Joi.object().keys(Object.assign({}, BasePreAggregation, {
+      type: Joi.any().valid('rollup').required(),
+      measureReferences: Joi.func(),
+      dimensionReferences: Joi.func(),
+      segmentReferences: Joi.func(),
+      timeDimensionReference: Joi.func().required(),
+      dateRange: Joi.alternatives().try(
+          Joi.string().required(),
+          Joi.array().length(2).required(),
+      ),
+      timezone: Joi.string()
+    })),
   ))
 });
 
