@@ -1,11 +1,14 @@
 {
-  "name": "@cubejs-backend/hive-driver",
+  "name": "@downstreamimpact/cubejs-hive-driver",
   "description": "Cube.js Hive database driver",
   "author": "Statsbot, Inc.",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "version": "0.12.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cube-js/cube.js.git",
+    "url": "https://github.com/downstreamimpact/cube.js.git",
     "directory": "packages/cubejs-hive-driver"
   },
   "engines": {
@@ -13,7 +16,7 @@
   },
   "main": "driver/HiveDriver.js",
   "dependencies": {
-    "@cubejs-backend/query-orchestrator": "^0.12.0",
+    "@downstreamimpact/cubejs-query-orchestrator": "^0.12.0",
     "generic-pool": "^3.6.0",
     "jshs2": "^0.4.4",
     "sasl-plain": "^0.1.0",
@@ -21,8 +24,5 @@
     "sqlstring": "^2.3.1",
     "thrift": "^0.9.3"
   },
-  "license": "Apache-2.0",
-  "publishConfig": {
-    "access": "public"
-  }
+  "license": "Apache-2.0"
 }

@@ -1,11 +1,14 @@
 {
-  "name": "@cubejs-backend/bigquery-driver",
+  "name": "@downstreamimpact/cubejs-bigquery-driver",
   "description": "Cube.js BigQuery database driver",
   "author": "Statsbot, Inc.",
   "version": "0.12.0",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/cube-js/cube.js.git",
+    "url": "https://github.com/downstreamimpact/cube.js.git",
     "directory": "packages/cubejs-bigquery-driver"
   },
   "engines": {
@@ -13,12 +16,9 @@
   },
   "main": "driver/BigQueryDriver.js",
   "dependencies": {
-    "@cubejs-backend/query-orchestrator": "^0.12.0",
+    "@downstreamimpact/cubejs-query-orchestrator": "^0.12.0",
     "@google-cloud/bigquery": "^4.1.4",
     "ramda": "^0.26.1"
   },
-  "license": "Apache-2.0",
-  "publishConfig": {
-    "access": "public"
-  }
+  "license": "Apache-2.0"
 }

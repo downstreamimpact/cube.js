@@ -1,9 +1,12 @@
 {
-  "name": "@cubejs-client/core",
+  "name": "@downstreamimpact/cubejs-client-core",
   "version": "0.12.0",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/cube-js/cube.js.git",
+    "url": "https://github.com/downstreamimpact/cube.js.git",
     "directory": "packages/cubejs-client-core"
   },
   "description": "cube.js client",

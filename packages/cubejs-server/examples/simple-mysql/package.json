@@ -1,7 +1,10 @@
 {
-  "name": "@cubejs-backend/simple-mysql-example",
+  "name": "@downstreamimpact/cubejs-simple-mysql-example",
   "description": "Mysql example",
   "author": "Statsbot, Inc.",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "version": "0.0.1",
   "engines": {
     "node": ">=8.11.1"
@@ -11,8 +14,8 @@
     "install": "./node_modules/.bin/node-java-maven"
   },
   "dependencies": {
-    "@cubejs-backend/server": "^0.0.4",
-    "@cubejs-backend/jdbc-driver": "^0.0.4",
+    "@downstreamimpact/cubejs-server": "^0.0.4",
+    "@downstreamimpact/cubejs-jdbc-driver": "^0.0.4",
     "node-java-maven": "^0.1.1"
   },
   "devDependencies": {

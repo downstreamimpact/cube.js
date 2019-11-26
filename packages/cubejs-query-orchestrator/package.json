@@ -1,11 +1,14 @@
 {
-  "name": "@cubejs-backend/query-orchestrator",
+  "name": "@downstreamimpact/cubejs-query-orchestrator",
   "description": "Cube.js Query Orchestrator and Cache",
   "author": "Statsbot, Inc.",
   "version": "0.12.0",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/cube-js/cube.js.git",
+    "url": "https://github.com/downstreamimpact/cube.js.git",
     "directory": "packages/cubejs-query-orchestrator"
   },
   "engines": {

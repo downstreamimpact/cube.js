@@ -1,11 +1,14 @@
 {
-  "name": "@cubejs-backend/server",
+  "name": "@downstreamimpact/cubejs-server",
   "description": "Cube.js all-in-one server",
   "author": "Statsbot, Inc.",
   "version": "0.12.0",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/cube-js/cube.js.git",
+    "url": "https://github.com/downstreamimpact/cube.js.git",
     "directory": "packages/cubejs-server"
   },
   "engines": {
@@ -25,7 +28,7 @@
     "test:debug": "node --inspect-brk scripts/test.js --testPathPattern=./index\\.test\\.js --runInBand"
   },
   "dependencies": {
-    "@cubejs-backend/server-core": "^0.12.0",
+    "@downstreamimpact/cubejs-server-core": "^0.12.0",
     "body-parser": "^1.15.2",
     "codesandbox-import-utils": "^1.3.8",
     "cors": "^2.8.4",

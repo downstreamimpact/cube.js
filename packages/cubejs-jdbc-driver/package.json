@@ -1,11 +1,14 @@
 {
-  "name": "@cubejs-backend/jdbc-driver",
+  "name": "@downstreamimpact/cubejs-jdbc-driver",
   "description": "Cube.js JDBC database driver",
   "author": "Statsbot, Inc.",
   "version": "0.12.0",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/cube-js/cube.js.git",
+    "url": "https://github.com/downstreamimpact/cube.js.git",
     "directory": "packages/cubejs-jdbc-driver"
   },
   "engines": {
@@ -13,7 +16,7 @@
   },
   "main": "driver/JDBCDriver.js",
   "dependencies": {
-    "@cubejs-backend/query-orchestrator": "^0.0.7",
+    "@downstreamimpact/cubejs-query-orchestrator": "^0.0.7",
     "generic-pool": "^3.1.7",
     "jdbc": "^0.6.2",
     "node-java-maven": "^0.1.1",

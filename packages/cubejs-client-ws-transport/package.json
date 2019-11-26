@@ -1,9 +1,12 @@
 {
-  "name": "@cubejs-client/ws-transport",
+  "name": "@downstreamimpact/cubejs-client-ws-transport",
   "version": "0.12.0",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/cube-js/cube.js.git",
+    "url": "https://github.com/downstreamimpact/cube.js.git",
     "directory": "packages/cubejs-client-ws-transport"
   },
   "description": "Cube.js WebSocket transport",
@@ -24,8 +27,5 @@
     "@babel/preset-env": "^7.3.1",
     "babel-jest": "^24.1.0",
     "jest": "^24.1.0"
-  },
-  "publishConfig": {
-    "access": "public"
   }
 }

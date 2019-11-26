@@ -1,10 +1,13 @@
 {
-  "name": "@cubejs-client/playground",
+  "name": "@downstreamimpact/cubejs-playground",
   "version": "0.12.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cube-js/cube.js.git",
+    "url": "https://github.com/downstreamimpact/cube.js.git",
     "directory": "packages/cubejs-playground"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
   },
   "dependencies": {
     "@babel/generator": "^7.4.0",
@@ -14,8 +17,8 @@
     "@babel/standalone": "^7.3.4",
     "@babel/traverse": "^7.4.0",
     "@babel/types": "^7.4.0",
-    "@cubejs-client/core": "^0.12.0",
-    "@cubejs-client/react": "^0.12.0",
+    "@downstreamimpact/cubejs-client-core": "^0.12.0",
+    "@downstreamimpact/cubejs-client-react": "^0.12.0",
     "antd": "^3.14.1",
     "bizcharts": "^3.4.3",
     "chart.js": "^2.7.3",
