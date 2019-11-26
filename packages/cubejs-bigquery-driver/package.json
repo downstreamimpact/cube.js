@@ -2,7 +2,7 @@
   "name": "@downstreamimpact/cubejs-bigquery-driver",
   "description": "Cube.js BigQuery database driver",
   "author": "Statsbot, Inc.",
-  "version": "0.12.0",
+  "version": "0.12.1",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },

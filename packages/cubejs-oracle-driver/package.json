@@ -2,7 +2,7 @@
   "name": "@downstreamimpact/cubejs-oracle-driver",
   "description": "Cube.js oracle database driver",
   "author": "Trikoz I.",
-  "version": "0.12.0",
+  "version": "0.12.1",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },

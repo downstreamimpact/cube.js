@@ -2,7 +2,7 @@
   "name": "@downstreamimpact/cubejs-server-core",
   "description": "Cube.js base component to wire all backend components together",
   "author": "Statsbot, Inc.",
-  "version": "0.12.0",
+  "version": "0.12.1",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },

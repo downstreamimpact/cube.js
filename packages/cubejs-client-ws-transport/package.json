@@ -1,6 +1,6 @@
 {
   "name": "@downstreamimpact/cubejs-client-ws-transport",
-  "version": "0.12.0",
+  "version": "0.12.1",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
